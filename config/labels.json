@@ -1,0 +1,11 @@
+{
+    "endpoint": "https://www.safetydata.go.kr/V2/api/DSSP-IF-00117",
+    "key_env": "SAFETY_API_KEY",
+    "key_param": "serviceKey",
+    "extension": "json",
+    "params": {
+      "returnType": "json",
+      "pageNo": 1,
+      "numOfRows": 10
+    }
+}

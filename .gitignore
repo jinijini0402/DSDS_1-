@@ -218,3 +218,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Heavy Rain Prediction Project
+data/
+.DS_Store

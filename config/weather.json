@@ -1,0 +1,13 @@
+{
+    "endpoint": "https://apihub.kma.go.kr/api/typ01/url/awsh.php",
+    "key_env": "KMA_API_KEY",
+    "key_param": "authKey",
+    "extension": "txt",
+    "params": {
+      "var": "RN",
+      "tm": "202504281400",
+      "stn": "108",
+      "disp": "1",
+      "help": "1"
+    }
+  }
