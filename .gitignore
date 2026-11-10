@@ -222,3 +222,13 @@ __marimo__/
 # Heavy Rain Prediction Project
 data/
 .DS_Store
+
+# API keys and local secrets
+.env.*
+!.env.example
+
+# Collection logs
+logs/
+
+# Local backup files
+*.bak
