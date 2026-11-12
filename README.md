@@ -19,7 +19,6 @@ Heavy Rain Damage Prediction using Weather and Disaster Data
 | 서울 침수흔적도 | 확보 자료 기준 | 침수 발생일, 면적, 침수구역 도형 | `data/bronze/labels/` |
 | 서울 행정동 경계 | 2021~2024 | 연도별 행정동 경계 SHP | `data/bronze/boundaries/` |
 | 기상자료 Silver | 2021~2024 | 결측·이상값 검증 및 표준화 결과 | `data/silver/weather/` |
-| 침수자료 Silver | 2022 | 행정동별 침수구역 공간 정합 결과 | `data/silver/labels/` |
 
 ### 데이터 사용 방법
 
