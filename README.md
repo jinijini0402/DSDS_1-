@@ -3,7 +3,7 @@ Heavy Rain Damage Prediction using Weather and Disaster Data
 
 ## 데이터셋 안내
 
-본 프로젝트는 서울특별시의 2021~2024년 기상 관측자료와 침수흔적도 데이터를 활용하여 행정동별 폭우 관련 데이터 파이프라인을 구축합니다.
+본 프로젝트는 서울특별시의 2021~2024년 기상 관측자료와 침수흔적도 데이터를 활용하여 행정동별 폭우 관련 데이터 파이프라인을 구축합니다. 데이터는 Bronze(원본), Silver(전처리), Gold(분석 및 모델 학습용)로 구분하여 관리합니다.
 
 대용량 원본 및 전처리 데이터는 GitHub에 직접 업로드하지 않고 별도의 Google Drive에서 관리합니다.
 
@@ -15,10 +15,15 @@ Heavy Rain Damage Prediction using Weather and Disaster Data
 
 | 데이터셋 | 기간 | 내용 | 저장 경로 |
 |---|---|---|---|
-| 서울 AWS 기상자료 | 2021~2024 | 관측소별 시간 단위 기상자료 | `data/bronze/weather/` |
-| 서울 침수흔적도 | 확보 자료 기준 | 침수 발생일, 면적, 침수구역 도형 | `data/bronze/labels/` |
-| 서울 행정동 경계 | 2021~2024 | 연도별 행정동 경계 SHP | `data/bronze/boundaries/` |
-| 기상자료 Silver | 2021~2024 | 결측·이상값 검증 및 표준화 결과 | `data/silver/weather/` |
+| `seoul_hourly` | 2021~2024 | 서울 AWS 관측소별 1시간 기상자료 | `data/bronze/weather/seoul_hourly/` |
+| `서울침수흔적도_원본` | 확보 자료 기준 | 연도별 침수흔적도 원본 | `data/bronze/labels/` |
+| `재난안전데이터` | 확보 자료 기준 | 침수 관련 재난안전데이터 | `data/bronze/labels/` |
+| `bnd_dong_11_2021_4Q` ~ `bnd_dong_11_2024_2Q` | 2021~2024 | 서울시 행정동 경계 SHP | `data/bronze/boundaries/` |
+| `bronze_manifest.csv`, `bronze_manifest.jsonl` | 수집 자료 기준 | 원본 수집 기록 및 SHA-256 정보 | `data/bronze/manifests/` |
+| `station_hourly` | 2021~2024 | 기상자료 표준화 및 결측·이상값 처리 | `data/silver/weather/station_hourly/` |
+| `flood_admin_결과` | 2022년 등 | 침수기록과 행정동 공간 정합 결과 | `data/silver/labels/flood_admin_결과/` |
+| `seoul_weather` | 2021~2024 | 기상자료 누락·중복·결측 및 이상값 검증 | `data/silver/quality_checks/seoul_weather/` |
+| `mappings` | 2021~2024 | AWS 관측소와 행정동 매핑 결과 저장 위치 | `data/silver/mappings/` |
 
 ### 데이터 사용 방법
 
