@@ -18,23 +18,16 @@ if not API_KEY:
 
 URL = "https://apihub.kma.go.kr/api/typ01/url/awsh.php"
 
-SEOUL_IDS = {
-    "108", "110",
-    *[str(i) for i in range(400, 420)],
-    "421", "423", "424", "425",
-    "509", "510", "889"
-}
+# 전국 AWS, 2024~2025년
+START = datetime(2024, 1, 1, 0, 0)
+END = datetime(2025, 12, 31, 23, 0)
 
-START = datetime(2021, 1, 1, 0, 0)
-END = datetime(2024, 12, 31, 23, 0)
-
-BASE = Path("data/bronze/weather/seoul_hourly")
+# 기존 서울 데이터와 분리하여 저장
+BASE = Path("data/bronze/weather/all_hourly")
 RAW = BASE / "raw"
-FILTERED = BASE / "seoul"
 MANIFEST = BASE / "manifest.jsonl"
 
 RAW.mkdir(parents=True, exist_ok=True)
-FILTERED.mkdir(parents=True, exist_ok=True)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--max-calls", type=int, default=12)
@@ -52,16 +45,15 @@ with requests.Session() as session:
         tm = current.strftime("%Y%m%d%H%M")
 
         raw_file = RAW / f"aws_all_{tm}.json"
-        seoul_file = FILTERED / f"seoul_{tm}.json"
 
-        # 두 파일이 있으면 이미 수집한 시각
-        if raw_file.exists() and seoul_file.exists():
+        # 이미 저장한 시각은 다시 요청하지 않음
+        if raw_file.exists():
             current += timedelta(hours=1)
             continue
 
         params = {
             "tm": tm,
-            "stn": "0",
+            "stn": "0",       # 전국 전체 관측소
             "disp": "1",
             "authKey": API_KEY
         }
@@ -75,32 +67,14 @@ with requests.Session() as session:
             response.raise_for_status()
 
             rows = response.json()
+
             if not isinstance(rows, list) or not rows:
-                raise ValueError("관측자료 배열이 비어 있음")
+                raise ValueError("전국 관측자료 배열이 비어 있음")
 
-            seoul_rows = [
-                row for row in rows
-                if str(row.get("AWS_ID")) in SEOUL_IDS
-                and str(row.get("TM")) == tm
-            ]
-
-            if not seoul_rows:
-                raise ValueError("서울 관측자료가 없음")
-
-            # 기존 파일을 직접 덮어쓰지 않고 임시 저장
+            # 임시 파일 저장 후 이름 변경
             raw_tmp = raw_file.with_suffix(".tmp")
-            seoul_tmp = seoul_file.with_suffix(".tmp")
-
             raw_tmp.write_bytes(response.content)
-            seoul_tmp.write_text(
-                json.dumps(
-                    seoul_rows, ensure_ascii=False, indent=2
-                ),
-                encoding="utf-8"
-            )
-
             raw_tmp.replace(raw_file)
-            seoul_tmp.replace(seoul_file)
 
             entry = {
                 "source_dataset": "kma_aws_hourly",
@@ -111,12 +85,10 @@ with requests.Session() as session:
                     timezone.utc
                 ).isoformat(),
                 "bronze_file": raw_file.as_posix(),
-                "seoul_file": seoul_file.as_posix(),
                 "sha256": hashlib.sha256(
                     response.content
                 ).hexdigest(),
                 "raw_record_count": len(rows),
-                "seoul_record_count": len(seoul_rows),
                 "collection_status": "parsed_unvalidated"
             }
 
@@ -126,14 +98,13 @@ with requests.Session() as session:
                 )
 
             saved += 1
+
             print(
-                f"[성공] {tm} | "
-                f"전국 {len(rows)}건 | "
-                f"서울 {len(seoul_rows)}건"
+                f"[성공] {tm} | 전국 {len(rows)}건"
             )
 
         except (requests.RequestException, ValueError) as e:
-            print(f"[중단] {tm} | {type(e).__name__}")
+            print(f"[중단] {tm} | {type(e).__name__}: {e}")
             print("인증키·요청 상태 또는 응답 자료 확인 필요")
             break
 
