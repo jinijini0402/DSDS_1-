@@ -1,7 +1,5 @@
 # 필수 제출물 점검표
 
-과제의 필수 제출물 네 종류를 기준으로 **GitHub 코드·Google Drive 데이터·분석 보고서**를 별도 확인합니다.
-
 | 필수 제출물 | 현재 상태 | 제출 전 확인 |
 |---|---|---|
 | 데이터 분석 산출물 | **미완료/저장소 미확인** | EDA의 기상·피해금액·인적피해 분포, 결측/중복/이상치, 시각화와 해석 |
@@ -9,11 +7,11 @@
 | 원본 데이터셋 및 전처리 데이터셋 | **주요 데이터 확보** | Google Drive Bronze·Silver·Gold 폴더와 산출물 존재. 원본 계보/검증자료 점검 |
 | 사용 모델 파일 및 학습 결과 | **미완료/저장소 미확인** | Baseline, XGBoost, 검증·테스트 지표, 학습 모델 파일과 재현 명령 필요 |
 
-## 핵심 Python 파일 목록 (현재 이름 유지)
+## 핵심 Python 파일 목록
 
 **Bronze (4):**
 - `first_request.py`
-- `collect_seoul_hourly.py` (파일명은 서울, 최신 수집 범위는 코드 검증 필요)
+- `collect_nationwide_aws_hourly.py`
 - `collect_safety_damage.py`
 - `rebuild_bronze_manifest.py`
 
@@ -28,7 +26,7 @@
 **Silver — 피해·매핑 (8):**
 - `filter_rain_damage_2024_2025.py`
 - `build_private_rain_latest_history_review_v2.py`
-- `map_private_rain_v2_to_sgis_review_fixed.py` (backup ZIP에서 복원)
+- `map_private_rain_v2_to_sgis_review_fixed.py`
 - `audit_private_mapping_recovery_2025.py`
 - `map_private_rain_v2_to_sgis_recovered_2025.py`
 - `map_public_rain_to_sgis_review.py`
@@ -51,11 +49,8 @@
 - `audit_rain_label_join_readiness.py`
 - `validate_final_gold.py`
 
-**총 28개 Python 파일**. Python 원본을 삭제하거나 이름을 바꾸지 않고, 실제 의존성·최종 버전 확인 뒤 추가합니다.
-
 ## 과제 제출에 필요한 추가 작업
 
-- [ ] 28개 Python 코드 최신 로컬 버전 GitHub 업로드. **현재 이 PR은 README/가이드 정리 단계이며, 28개 전부 추가된 상태가 아닙니다.**
 - [ ] 인적 피해 Silver 생성 코드 확보 및 연도별 Label 처리기준 기록
 - [ ] `map_private_rain_v2_to_sgis_review_fixed.py`가 참조하는 레거시 `dong_daily_features_YYYY.parquet` 의존성 해결
 - [ ] `requirements.txt` 기준 패키지 설치 및 코드별 import 확인
@@ -68,5 +63,3 @@
 - **GitHub:** Python 코드, README, 데이터 정의, 분석 보고서, 가벼운 검증 산출물
 - **Google Drive:** 대용량 원본 및 Silver/Gold 데이터, manifest·QA
 - **비공개 로컬:** `.env`, API 키, 재배포 제한 자료
-
-이미 Git이 추적 중인 `data/` 파일은 `.gitignore`만으로 자동 제거되지 않습니다. 기존 원본의 삭제·이동 여부는 **명시적인 점검 전까지 보류**합니다. `main`을 수정하지 않고 리뷰 브랜치에서 확인합니다.
