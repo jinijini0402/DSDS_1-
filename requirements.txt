@@ -1,0 +1,11 @@
+# Packages used by the reviewed data collection, medallion, and validation scripts.
+# Versions are intentionally unpinned until the local working virtual environment
+# is tested; generate a lockfile after confirming a clean installation.
+requests
+python-dotenv
+pandas
+numpy
+duckdb
+geopandas
+pyarrow
+openpyxl
