@@ -9,3 +9,4 @@ duckdb
 geopandas
 pyarrow
 openpyxl
+dbfread
